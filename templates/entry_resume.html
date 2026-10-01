@@ -1,0 +1,815 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+
+    <style>
+        /* Theme Colors:
+--primary-blue: #0077b6;
+--light-blue: #00b4d8;
+--background: #f9fafc;
+--card-bg: #ffffff;
+--text-dark: #333;
+*/
+
+:root {
+  --primary-blue: #0077b6;
+  --light-blue: #00b4d8;
+  --background: #f9fafc;
+  --card-bg: #ffffff;
+  --text-dark: #333;
+  --border-color: #ddd;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== Global Reset and Body Styles ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  padding-bottom: 50px; /* Space for mobile bottom padding */
+}
+
+/* ========== Typography ========== */
+.page-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: var(--primary-blue);
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.3rem;
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-blue);
+  display: inline-block;
+}
+
+/* ========== Layout and Containers ========== */
+.container {
+  width: 95%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px; /* Spacing between cards */
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* Style for work experience dates since they are text inputs */
+.work-entry .grid:nth-child(2) {
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* Separate grid style for the education month inputs */
+input[type="month"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 10px;
+}
+
+/* ========== Form Elements (Inputs, Textareas) ========== */
+input, textarea, select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--text-dark);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--light-blue);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 179, 216, 0.2); /* Light blue focus ring */
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  margin-bottom: 10px;
+}
+
+/* Style for select box */
+select {
+    appearance: none; /* Removes default dropdown arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 35px; /* Make space for the icon */
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+label[for="template"] {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* ========== Buttons ========== */
+.add-btn, .remove-btn, .save-btn, .download-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.1s;
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Specific Generator Buttons */
+button[id^="generate-"] {
+    background-color: var(--light-blue);
+    color: white;
+    margin-bottom: 15px;
+    max-width: 150px;
+    font-size: 0.95rem;
+}
+
+button[id^="generate-"]:hover {
+    background-color: #008eb3;
+    transform: translateY(-1px);
+}
+
+/* Form Actions (Bottom row) */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+  padding-bottom: 30px;
+}
+
+.save-btn {
+  background-color: #4caf50; /* Green for success/preview */
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-1px);
+}
+
+.download-btn {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+.download-btn:hover {
+  background-color: #005a8d;
+  transform: translateY(-1px);
+}
+
+.remove-btn, .cancel-btn {
+  background-color: #f44336; /* Red for remove/cancel */
+  color: white;
+  padding: 8px 15px;
+  font-size: 0.9rem;
+}
+
+.remove-btn:hover, .cancel-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Special styling for dynamic fields (Projects/Work/Certs) */
+.project-entry, .work-entry, .cert-entry {
+    padding: 15px 0;
+    border-left: 3px solid var(--light-blue);
+    padding-left: 15px;
+    margin-top: 10px;
+    position: relative;
+}
+
+.work-entry + hr, .cert-entry + hr {
+    margin: 20px 0;
+    border-top: 1px dashed var(--border-color);
+}
+
+/* Reset button default styles for dynamic elements */
+.project-entry .actions, .work-entry .actions, .cert-entry .actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Style for the + Add Project/Work/Cert button */
+#add-project-btn, #add-work-btn, #add-cert-btn {
+    background: #4caf50;
+    color: white;
+    max-width: 200px;
+    margin: 10px auto;
+    display: block;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr; /* Stack grid items vertically on mobile */
+    gap: 10px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px 30px; /* Padding for the container */
+  }
+
+  .save-btn, .download-btn {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  button[id^="generate-"] {
+    max-width: 100%;
+  }
+}
+
+    </style>
+</head>
+<body class="entry-page">
+<main class="container">
+  <h1 class="page-title">Resume Builder</h1>
+
+  <!-- 🔹 START FORM -->
+ <form method="POST" action="{% url 'entry_resume' %}">
+    {% csrf_token %}
+    <!-- Your complete form fields remain SAME -->
+
+    <!-- Name -->
+    <section class="card">
+      <h2>Full Name</h2>
+        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="card">
+      <h2>Contact Information</h2>
+      <div class="grid">
+        <input type="email" name="email" placeholder="Email">
+        <input type="tel" name="phone" placeholder="Mobile Number">
+      </div>
+      <div class="grid">
+        <input type="url" name="linkedin" placeholder="LinkedIn URL">
+
+      </div>
+    </section>
+
+    <!-- Summary -->
+   <section class="card">
+  <h2>Professional Summary</h2>
+  <textarea id="summary" name="summary" placeholder="Write a compelling professional summary..."></textarea>
+  <button type="button" id="generate-summary" class="add-btn" style="white-space:nowrap;">
+    ✨ Generate
+  </button>
+</section>
+
+    <!-- Education -->
+    <section class="card">
+      <h2>Education</h2>
+      <div class="grid">
+        <input type="text" name="edu_title" placeholder="Degree/Title">
+        <input type="text" name="edu_school" placeholder="School/College">
+      </div>
+      <div class="grid">
+        <input type="month" name="edu_start">
+        <input type="month" name="edu_end">
+      </div>
+      <textarea id="edu_desc" name="edu_desc" placeholder="Description of your education"></textarea>
+        <button type="button" id="generate-education" class="add-btn" style="white-space:nowrap;">
+    ✨ Generate
+  </button>
+    </section>
+
+    <!-- Skills -->
+    <section class="card">
+      <h2>Skills</h2>
+       <textarea id="skills" name="skills" placeholder="List your key skills..."></textarea>
+      <button type="button" id="generate-skills" class="add-btn" style="white-space:nowrap;">✨ Generate</button>
+    </section>
+
+    <!-- Projects -->
+    <div class="card">
+  <h2>Project</h2>
+
+  <div class="project-entry" id="project-1">
+    <div class="projects">
+      <div class="grid">
+        <input type="text" name="project_title[]" placeholder="Project Title" />
+        <input type="text" name="project_tech[]" placeholder="Technology Stack" />
+      </div>
+
+      <textarea name="project_desc[]" placeholder="Describe your project briefly..."></textarea>
+
+      <button type="button" id="generate-project" class="add-btn">✨ Generate</button>
+
+      <div class="actions">
+<!--        <button type="button" class="remove-btn cancel-btn" data-project-id="project-1">-->
+<!--          Remove Project-->
+<!--        </button>-->
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="add-btn" id="add-project-btn">+ Add Project</button>
+</div>
+
+    <!-- Work Experience -->
+    <div class="work-entry" id="work-1">
+  <div class="card">
+      <h2>Experience</h2>
+    <input type="text" name="work_title[]" placeholder="Title/Position" />
+    <input type="text" name="work_company[]" placeholder="Organization/Company" />
+  </div>
+
+  <div class="card">
+    <input type="text" name="work_start[]" placeholder="Start Date (--/--, ----)" />
+    <input type="text" name="work_end[]" placeholder="End Date (--/--, ----)" />
+  </div>
+
+  <textarea name="work_desc[]" placeholder="Describe your responsibilities..."></textarea>
+
+  <button type="button" id="generate-work" class="add-btn">✨ Generate</button>
+</div>
+
+    <!-- Certifications -->
+   <div class="cert-entry" id="cert-1">
+  <div class="card">
+      <h2>Certifications</h2>
+    <input type="text" name="cert_name[]" placeholder="Certification Name" />
+    <input type="text" name="cert_org[]" placeholder="Issuing Organization" />
+  </div>
+
+<!--  <button type="button" id="generate-cert" class="add-btn">✨ Generate</button>-->
+</div>
+
+    <!-- Extra Curricular Activities -->
+    <section class="card">
+      <h2>Extra Curricular Activities</h2>
+      <textarea id="extra" name="extra" placeholder="List your extra curricular activities..."></textarea>
+<!--      <button type="button" id="generate-extra" class="add-btn" style="white-space:nowrap;">✨ Generate</button>-->
+    </section>
+
+    <label for="template">Choose Resume Template:</label>
+    <select name="template" id="template" required>
+      <option value="template1">Classic</option>
+      <option value="template2">Modern</option>
+      <option value="template3">Minimal</option>
+      <option value="template4">Creative</option>
+    </select>
+
+    <!-- Save / Download -->
+    <div class="form-actions">
+      <button type="submit" class="save-btn">💾 Save & Preview</button>
+
+    </div>
+  </form>
+  <!-- 🔹 END FORM -->
+</main>
+
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* ================= ADD PROJECT ================= */
+  const addProjectBtn = document.getElementById("add-project-btn");
+
+  if (addProjectBtn) {
+    let projectCount = 1;
+
+    addProjectBtn.addEventListener("click", function () {
+
+      projectCount++;
+
+      const newProject = document.createElement("div");
+      newProject.classList.add("project-entry");
+      newProject.id = "project-" + projectCount;
+
+      newProject.innerHTML = `
+        <div class="projects">
+          <div class="grid">
+            <input type="text" name="project_title[]" placeholder="Project Title" />
+            <input type="text" name="project_tech[]" placeholder="Technology Stack" />
+          </div>
+
+          <textarea name="project_desc[]" placeholder="Describe your project briefly..."></textarea>
+
+          <button type="button" class="add-btn">✨ Generate</button>
+
+          <div class="actions">
+            <button type="button" class="remove-btn cancel-btn">
+              Remove Project
+            </button>
+          </div>
+        </div>
+      `;
+
+      addProjectBtn.before(newProject);
+    });
+  }
+
+  /* ================= REMOVE PROJECT ================= */
+  document.addEventListener("click", function (e) {
+
+    if (e.target.classList.contains("remove-btn")) {
+
+      const projectEntry = e.target.closest(".project-entry");
+
+      if (projectEntry && document.querySelectorAll(".project-entry").length > 1) {
+        projectEntry.remove();
+      } else {
+        alert("At least one project is required.");
+      }
+    }
+  });
+
+  /* ================= LOGIN ================= */
+  const loginForm = document.querySelector(".signin-card form");
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", function (e) {
+      const username = document.getElementById("username");
+      const password = document.getElementById("password");
+
+      if (!username?.value.trim() || !password?.value.trim()) {
+        e.preventDefault();
+        alert("Please fill in both fields.");
+      }
+    });
+  }
+
+  /* ================= REGISTER ================= */
+  const registerForm = document.getElementById("registerForm");
+
+  if (registerForm) {
+    registerForm.addEventListener("submit", function (e) {
+      const password = document.getElementById("password");
+      const confirmPassword = document.getElementById("confirm_password");
+
+      if (password && confirmPassword && password.value !== confirmPassword.value) {
+        e.preventDefault();
+        alert("Passwords do not match!");
+      }
+    });
+  }
+
+
+/* ================= PROJECT AI ================= */
+
+document.addEventListener("click", async function (e) {
+
+    if (e.target && e.target.id === "generate-project") {
+
+        const button = e.target;
+        const projectBox = button
+            .closest(".project-entry")
+            .querySelector("textarea");
+
+        const currentText = projectBox.value.trim();
+
+        if (!currentText) {
+            alert("Type something in project description first.");
+            return;
+        }
+
+        try {
+
+            button.textContent = "⌛ Generating...";
+            button.disabled = true;
+
+            const response = await fetch("/generate-project/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({
+                    section: "project",
+                    content: currentText
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                projectBox.value = data.result;
+            } else {
+                alert("Error: " + (data.error || "Server Error"));
+            }
+
+        } catch (error) {
+            console.error(error);
+            alert("Network error.");
+        } finally {
+            button.textContent = "✨ Generate";
+            button.disabled = false;
+        }
+    }
+});
+
+
+/* ================= EXPERIENCE AI ================= */
+
+const generateWorkBtn = document.getElementById("generate-work");
+
+if (generateWorkBtn) {
+    generateWorkBtn.addEventListener("click", async function () {
+
+        const workBox = this.closest(".work-entry")
+            .querySelector("textarea");
+
+        const currentText = workBox.value.trim();
+
+        if (!currentText) {
+            alert("Enter experience details first.");
+            return;
+        }
+
+        try {
+
+            generateWorkBtn.textContent = "⌛ Generating...";
+            generateWorkBtn.disabled = true;
+
+            const response = await fetch("/generate-work/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({
+                    section: "experience",
+                    content: currentText
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                workBox.value = data.result;
+            } else {
+                alert("Error: " + (data.error || "Server Error"));
+            }
+
+        } catch (error) {
+            console.error(error);
+            alert("Network error.");
+        } finally {
+            generateWorkBtn.textContent = "✨ Generate";
+            generateWorkBtn.disabled = false;
+        }
+    });
+}
+
+
+
+
+
+
+/* ================= SKILLS AI ================= */
+
+const generateSkillsBtn = document.getElementById("generate-skills");
+
+if (generateSkillsBtn) {
+    generateSkillsBtn.addEventListener("click", async function () {
+
+        const skillsBox = document.getElementById("skills");
+        const currentText = skillsBox.value.trim();
+
+        if (!currentText) {
+            alert("Enter some skills first.");
+            return;
+        }
+
+        try {
+
+            generateSkillsBtn.textContent = "⌛ Generating...";
+            generateSkillsBtn.disabled = true;
+
+            const response = await fetch("/generate-skills/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({
+                    section: "skills",
+                    content: currentText
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                skillsBox.value = data.result;
+            } else {
+                alert("Error: " + (data.error || "Server Error"));
+            }
+
+        } catch (error) {
+            console.error("Fetch Error:", error);
+            alert("Network error.");
+        } finally {
+            generateSkillsBtn.textContent = "✨ Generate";
+            generateSkillsBtn.disabled = false;
+        }
+    });
+}
+
+
+
+
+
+
+
+/* ================= EDUCATION AI ================= */
+
+const generateEducationBtn = document.getElementById("generate-education");
+
+if (generateEducationBtn) {
+    generateEducationBtn.addEventListener("click", async function () {
+
+        const eduBox = document.getElementById("edu_desc");
+        const currentText = eduBox.value.trim();
+console.log(currentText);
+        if (!currentText) {
+            alert("Please type something in education description first.");
+            return;
+        }
+
+        try {
+
+            generateEducationBtn.textContent = "⌛ Generating...";
+            generateEducationBtn.disabled = true;
+
+            const response = await fetch("/generate-education/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({
+                    section: "education",
+                    content: currentText
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                eduBox.value = data.result;
+            } else {
+                alert("Error: " + (data.error || "Server Error"));
+            }
+
+        } catch (error) {
+            console.error("Fetch Error:", error);
+            alert("Network error.");
+        } finally {
+            generateEducationBtn.textContent = "✨ Generate";
+            generateEducationBtn.disabled = false;
+        }
+    });
+}
+
+
+
+
+  /* ================= GENERATE SUMMARY ================= */
+  const generateBtn = document.getElementById("generate-summary");
+
+  if (generateBtn) {
+    generateBtn.addEventListener("click", async function () {
+
+      const name = document.getElementById("name")?.value || "";
+      const skills = document.getElementById("skills")?.value || "";
+      const experience = document.getElementById("experience")?.value || "";
+      const job_role = document.getElementById("job_role")?.value || "";
+      const summaryBox = document.getElementById("summary");
+
+      if (!name) {
+        alert("Enter your name first.");
+        return;
+      }
+
+      try {
+        generateBtn.textContent = "Generating...";
+        generateBtn.disabled = true;
+             console.log(summaryBox.value);
+        const response = await fetch("/generate-summary/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": getCookie("csrftoken")
+          },
+          body: new URLSearchParams({
+
+
+                summary: summaryBox.value
+
+
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error("Server error");
+        }
+
+        const data = await response.json();
+
+        if (data.summary) {
+          summaryBox.value = data.summary;
+        } else {
+          alert("No summary returned.");
+        }
+
+      } catch (error) {
+        console.error(error);
+        console.log(error);
+        alert("Error generating summary.");
+      } finally {
+        generateBtn.textContent = "✨ Generate";
+        generateBtn.disabled = false;
+      }
+    });
+  }
+
+
+
+
+
+
+});
+
+/* ================= CSRF HELPER ================= */
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + "=")) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+</script>
+
+</body>
+</html>

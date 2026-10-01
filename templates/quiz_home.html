@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quiz Preparation</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#ffe6f0;   /* faint baby pink */
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* container */
+.container{
+    text-align:center;
+    background:#ffd6e7;   /* soft pink card */
+    padding:40px;
+    border-radius:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.12);
+    width:420px;
+}
+
+h1{
+    margin-bottom:30px;
+    color:#8b3a62;
+}
+
+.quiz-box{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.quiz-btn{
+    text-decoration:none;
+    padding:15px;
+    border-radius:10px;
+    font-size:18px;
+    color:white;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.quant{background:#ff7b54;}
+.verbal{background:#4CAF50;}
+.logical{background:#00a8ff;}
+.technical{background:#9c27b0;}
+
+.quiz-btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 5px 12px rgba(0,0,0,0.2);
+}
+
+.footer{
+    margin-top:20px;
+    font-size:14px;
+    color:#8b3a62;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🧠 Quiz Preparation</h1>
+
+<div class="quiz-box">
+<a class="quiz-btn quant" href="/topic/1/subtopics/">📊 Quantitative Aptitude</a>
+<a class="quiz-btn logical" href="/topic/2/subtopics/">🧩 Logical Reasoning</a>
+<a class="quiz-btn verbal" href="/topic/3/subtopics/">📖 Verbal Ability</a>
+<a class="quiz-btn technical" href="/topic/4/subtopics/">💻 Technical</a>
+
+</div>
+
+<div class="footer">
+Select a topic to start your quiz
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Cover Letter</title>
+    <style>
+        @page { size: A4; margin: 2cm; }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #fdfcfb;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .cover-container {
+            width: 70%;
+            background-color: #ffffff;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            line-height: 1.6;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .contact-info p {
+            margin: 3px 0;
+        }
+
+        .field-label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .section { margin-bottom: 20px; }
+
+        .signature {
+            margin-top: 40px;
+            font-weight: bold;
+            color: #3d5a80;
+        }
+
+        @media print {
+            body { background: none; }
+            .cover-container { box-shadow: none; width: 100%; padding: 2cm; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cover-container">
+
+
+        <!-- Contact Info -->
+        <div class="contact-info">
+            <p><span class="field-label"></span> {{ name }}</p>
+            {% if address %}<p><span class="field-label">Address:</span> {{ address }}</p>{% endif %}
+            <p><span class="field-label">Email:</span> {{ email }}</p>
+            <p><span class="field-label">Phone:</span> {{ phone }}</p>
+            {% if linkedin %}<p><span class="field-label">LinkedIn / Portfolio:</span> {{ linkedin }}</p>{% endif %}
+        </div>
+
+        <!-- Date -->
+        <div class="section">
+            <p><span class="field-label">Date:</span> {{ date }}</p>
+        </div>
+
+        <!-- Recipient -->
+        <div class="section">
+            <p><span class="field-label">To:</span><br>
+            {{ hiring_manager|default:"Hiring Manager" }}<br>
+            {{ company }}<br>
+            {% if company_address %}{{ company_address }}{% endif %}</p>
+        </div>
+
+        <!-- Greeting -->
+        <div class="section">
+            <p>Dear {{ hiring_manager|default:"Hiring Manager" }},</p>
+        </div>
+
+        <!-- Cover Letter Content -->
+        <div class="section">
+            <p><span class="field-label"></span> {{ intro }}</p>
+            <p><span class="field-label"></span> {{ body }}</p>
+            <p><span class="field-label"></span> {{ closing }}</p>
+        </div>
+
+        <!-- Signature -->
+        <div class="signature">
+            Sincerely,<br>
+            {{ signature }}
+        </div>
+        <a href="{% url 'download_cover_pdf' %}" class="btn download-btn">⬇️ Download PDF</a>
+    <a href="{% url 'download_cover_docx' %}" class="btn download-btn">⬇️ Download Word</a>
+    </div>
+
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

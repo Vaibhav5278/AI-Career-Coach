@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }} - Cover Letter</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* Reset & Body */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    color: #222;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  /* A4 container */
+  .container {
+    width: 210mm; /* A4 width */
+    min-height: 297mm; /* A4 height */
+    background: #fff;
+    padding: 40px 50px;
+    margin: 20px 0;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .contact-info {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .contact-info p {
+    margin: 2px 0;
+  }
+
+  .company-details {
+    margin-top: 25px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .company-details p {
+    margin: 4px 0;
+  }
+
+  .letter-body {
+    margin-top: 30px;
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: justify;
+  }
+
+  .letter-body p {
+    margin-bottom: 15px;
+  }
+
+  .signature {
+    margin-top: 40px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .back-btn {
+    display: inline-block;
+    margin-top: 40px;
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .back-btn:hover {
+    background: #0056b3;
+  }
+
+  @media print {
+    body { background:white; padding:0; }
+    .container { box-shadow:none; margin:0; width:100%; min-height:auto; }
+    .back-btn { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <h1>{{ name }}</h1>
+    <div class="contact-info">
+      {% if address %}<p><strong>Address:</strong> {{ address }}</p>{% endif %}
+      <p><strong>Email:</strong> {{ email }}</p>
+      <p><strong>Phone:</strong> {{ phone }}</p>
+      {% if linkedin %}<p><strong>LinkedIn:</strong> {{ linkedin }}</p>{% endif %}
+      <p><strong>Date:</strong> {{ date }}</p>
+    </div>
+  </header>
+
+  <!-- COMPANY DETAILS -->
+  <div class="company-details">
+    <p><strong>To:</strong> {{ company }}</p>
+    {% if company_address %}<p><strong>Address:</strong> {{ company_address }}</p>{% endif %}
+    <p><strong>Position Applied For:</strong> {{ position }}</p>
+    {% if hiring_manager %}<p><strong>Hiring Manager:</strong> {{ hiring_manager }}</p>{% endif %}
+  </div>
+
+  <!-- LETTER BODY -->
+  <div class="letter-body">
+    <p>{{ intro }}</p>
+    <p>{{ body }}</p>
+    <p>{{ closing }}</p>
+  </div>
+
+  <!-- SIGNATURE -->
+  <div class="signature">
+    <p>Best regards,</p>
+    <p>{{ signature }}</p>
+  </div>
+
+  <a href="{% url 'entry_cv' %}" class="back-btn">← Back to Builder</a>
+     <a href="{% url 'download_cover_pdf' %}" class="btn download-btn">⬇️ Download PDF</a>
+    <a href="{% url 'download_cover_docx' %}" class="btn download-btn">⬇️ Download Word</a>
+</div>
+
+</body>
+</html>

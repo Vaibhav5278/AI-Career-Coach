@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }} - Cover Letter</title>
+    <style>
+        @page { size: A4; margin: 0; }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            background-color: #2F3E46; /* Dark charcoal gray */
+            color: #FFFFFF;
+            padding: 30px;
+            width: 30%;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            color: #FFFFFF; /* White for name */
+        }
+        .sidebar p {
+            margin: 5px 0;
+            font-size: 13px;
+            color: #CAD2C5; /* Light gray for fields */
+        }
+
+        .content {
+            padding: 40px;
+            width: 70%;
+            line-height: 1.6;
+            background-color: #FFFFFF;
+            box-sizing: border-box;
+        }
+
+        .content h1 {
+            color: #2F3E46; /* Dark gray heading */
+            margin-top: 0;
+        }
+        .content p {
+            font-size: 13px;
+            margin: 5px 0;
+        }
+        .field-label {
+            font-weight: bold;
+            color: #3D5A80; /* Teal accent for labels */
+        }
+        .accent {
+            color: #3D5A80; /* Teal for emphasis */
+            font-weight: bold;
+        }
+
+        @media print {
+            body { background: none; }
+            .content { box-shadow: none; width: 100%; padding: 2cm; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar with personal info -->
+    <div class="sidebar">
+        <h2>{{ name }}</h2>
+        {% if address %}<p><span class="field-label">Address:</span> {{ address }}</p>{% endif %}
+        <p><span class="field-label">Email:</span> {{ email }}</p>
+        <p><span class="field-label">Phone:</span> {{ phone }}</p>
+        {% if linkedin %}<p><span class="field-label">LinkedIn / Portfolio:</span> <a href="{{ linkedin }}" style="color:white;">{{ linkedin }}</a></p>{% endif %}
+    </div>
+
+    <!-- Main content -->
+    <div class="content">
+        <p><span class="field-label">Date:</span> {{ date }}</p>
+
+        <p>
+            <span class="field-label">To:</span><br>
+            {{ hiring_manager|default:"Hiring Manager" }}<br>
+            {{ company }}<br>
+            {% if company_address %}{{ company_address }}{% endif %}
+        </p>
+
+        <p>Dear {{ hiring_manager|default:"Hiring Manager" }},</p>
+
+        <p><span class="field-label">Introduction:</span> {{ intro }}</p>
+        <p><span class="field-label">Body:</span> {{ body }}</p>
+        <p><span class="field-label">Closing:</span> {{ closing }}</p>
+
+        <p>Sincerely,<br><span class="accent">{{ signature }}</span></p>
+
+        <a href="{% url 'download_cover_pdf' %}" class="btn download-btn">⬇️ Download PDF</a>
+    <a href="{% url 'download_cover_docx' %}" class="btn download-btn">⬇️ Download Word</a>
+    </div>
+
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

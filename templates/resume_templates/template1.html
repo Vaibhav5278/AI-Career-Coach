@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ data.name|default:"Resume" }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* Reset & Body */
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif; }
+  body { background:#f5f5f5; display:flex; justify-content:center; padding:30px 0; }
+  .resume { width:100%; max-width:800px; background:#fff; padding:40px 40px; border-radius:8px; box-shadow:0 5px 15px rgba(0,0,0,0.1); }
+
+  /* Header */
+  header { text-align:center; margin-bottom:30px; }
+  header h1 { font-size:2rem; font-weight:700; color:#111; }
+  header h2 { font-size:1.1rem; font-weight:500; color:#555; margin-top:4px; }
+  .contact { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; font-size:0.9rem; color:#555; margin-top:8px; }
+  .contact span { display:flex; align-items:center; gap:4px; }
+
+  /* Section Titles */
+  section { margin-bottom:25px; }
+  .section-title { font-size:1.2rem; font-weight:700; color:#111; border-bottom:2px solid #111; padding-bottom:4px; margin-bottom:10px; text-transform:uppercase; }
+
+  /* Text & Lists */
+  .desc { font-size:0.95rem; color:#333; line-height:1.5; margin-top:6px; }
+  .desc ul { padding-left:20px; margin-top:6px; }
+  .desc li { margin-bottom:4px; }
+
+  /* Work / Education / Projects */
+  .item { margin-bottom:16px; }
+  .item-header { display:flex; justify-content:space-between; flex-wrap:wrap; }
+  .title { font-weight:600; font-size:1rem; color:#111; }
+  .company, .school { font-style:italic; color:#111; font-size:0.95rem; margin-top:2px; }
+  .date { font-size:0.9rem; color:#555; white-space:nowrap; margin-top:2px; }
+
+  /* Skills & Extras */
+  .tags { display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:0; margin-top:6px; }
+  .tags li { background:#e0e0e0; color:#111; padding:5px 12px; border-radius:6px; font-size:0.85rem; font-weight:500; }
+
+  /* Buttons */
+  .actions { display:flex; justify-content:center; gap:12px; margin-top:25px; flex-wrap:wrap; }
+  .btn { text-decoration:none; padding:8px 16px; border-radius:6px; font-weight:600; font-size:0.9rem; color:white; transition:0.2s; }
+  .back { background:#6b7280; }
+  .edit { background:#374151; }
+  .download { background:#111; }
+  .btn:hover { opacity:0.9; transform:translateY(-2px); }
+
+  @media(max-width:600px) {
+    .item-header { flex-direction:column; align-items:flex-start; }
+    .tags { gap:5px; }
+  }
+
+  @media print {
+    body { background:white; }
+    .resume { box-shadow:none; padding:0; width:210mm; }
+    .actions { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="resume">
+
+  <!-- Header -->
+  <header>
+    <h1>{{ data.name|default:"Your Name" }}</h1>
+    <h2>{{ data.role|default:"Aspiring Professional" }}</h2>
+    <div class="contact">
+      {% if data.email %}<span>Email: {{ data.email }}</span>{% endif %}
+      {% if data.phone %}<span>Phone: {{ data.phone }}</span>{% endif %}
+      {% if data.linkedin %}<span>LinkedIn: {{ data.linkedin }}</span>{% endif %}
+      {% if data.website %}<span>Website: {{ data.website }}</span>{% endif %}
+    </div>
+  </header>
+
+  <!-- Professional Summary -->
+  <section>
+    <div class="section-title">Professional Summary</div>
+    <p class="desc">{{ data.summary|default:"Write a concise professional summary highlighting your skills and career goals." }}</p>
+  </section>
+
+  <!-- Skills -->
+  <section>
+    <div class="section-title">Skills</div>
+    <ul class="tags">
+      {% for skill in data.skills %}<li>{{ skill }}</li>{% empty %}<li>Python</li><li>SQL</li>{% endfor %}
+    </ul>
+  </section>
+
+  <!-- Work Experience -->
+  <section>
+    <div class="section-title">Work Experience</div>
+    {% for work in data.work %}
+    <div class="item">
+      <div class="item-header">
+        <span class="title">{{ work.title }}</span>
+        <span class="date">{{ work.start }} - {{ work.end }}</span>
+      </div>
+      <span class="company">{{ work.company }}</span>
+      <p class="desc">{{ work.desc|safe }}</p>
+    </div>
+    {% empty %}
+    <p class="desc">No work experience listed.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Projects -->
+  <section>
+    <div class="section-title">Projects</div>
+    {% for proj in data.projects %}
+    <div class="item">
+      <div class="item-header">
+        <span class="title">{{ proj.title }}</span>
+        <span class="date">({{ proj.tech }})</span>
+      </div>
+      <p class="desc">{{ proj.desc|safe }}</p>
+    </div>
+    {% empty %}
+    <p class="desc">No projects listed.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Education -->
+  <section>
+    <div class="section-title">Education</div>
+    {% for edu in data.education %}
+    <div class="item">
+      <div class="item-header">
+        <span class="title">{{ edu.title }}</span>
+        <span class="date">{{ edu.start }} - {{ edu.end }}</span>
+      </div>
+      <span class="school">{{ edu.school }}</span>
+      <p class="desc">{{ edu.desc|safe }}</p>
+    </div>
+    {% empty %}
+    <p class="desc">No education records.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Certifications -->
+  <section>
+    <div class="section-title">Certifications</div>
+    {% for cert in data.certifications %}
+    <div class="item">
+      <div class="item-header">
+        <span class="title">{{ cert.name }}</span>
+        <span class="date">{{ cert.date }}</span>
+      </div>
+      <span class="company">{{ cert.org }}</span>
+      <p class="desc">{{ cert.desc|safe }}</p>
+    </div>
+    {% empty %}
+    <p class="desc">No certifications added.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Extra Curricular Activities -->
+  <section>
+    <div class="section-title">Extra Curricular Activities</div>
+    <ul class="tags">
+      {% for activity in data.extra_activities %}<li>{{ activity }}</li>{% empty %}<li>Participated in college events</li>{% endfor %}
+    </ul>
+  </section>
+
+  <!-- Action Buttons -->
+  <div class="actions">
+    <a href="{% url 'entry_resume' %}" class="btn edit">Back</a>
+    <a href="{% url 'download_resume_pdf' %}" class="btn download">⬇️ Download PDF</a>
+    <a href="{% url 'download_resume_docx' %}" class="btn download">⬇️ Download Word</a>
+  </div>
+
+</div>
+
+</body>
+</html>

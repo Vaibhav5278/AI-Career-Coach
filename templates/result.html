@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quiz Result</title>
+
+<style>
+
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg,#1e3c72,#2a5298);
+}
+
+.result-card{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    width:350px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.3);
+    animation:fadeIn 1s ease;
+}
+
+.result-card h2{
+    margin-bottom:20px;
+    color:#333;
+}
+
+.score-circle{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    border:10px solid #00c6ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:bold;
+    margin:20px auto;
+    color:#333;
+}
+
+.message{
+    font-size:18px;
+    margin-top:10px;
+    color:#555;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:25px;
+    padding:12px 25px;
+    background:#00c6ff;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#0072ff;
+    transform:scale(1.05);
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="result-card">
+
+<h2>🎉 Quiz Result</h2>
+
+<div class="score-circle">
+<span id="scoreDisplay">0</span>
+</div>
+
+<p class="message" id="message"></p>
+
+<a href="{% url 'quiz_home' %}" class="btn">Take Another Quiz</a>
+
+</div>
+
+<script>
+
+let score = {{score}};
+let total = {{total}};
+
+let display = document.getElementById("scoreDisplay");
+let message = document.getElementById("message");
+
+let current = 0;
+
+let counter = setInterval(function(){
+
+    if(current >= score){
+        clearInterval(counter);
+        display.innerHTML = score + " / " + total;
+    }else{
+        current++;
+        display.innerHTML = current + " / " + total;
+    }
+
+},50);
+
+
+let percent = (score/total)*100;
+
+if(percent >= 80){
+    message.innerHTML = "🔥 Excellent Performance!";
+}
+else if(percent >= 50){
+    message.innerHTML = "👍 Good Job! Keep Practicing.";
+}
+else{
+    message.innerHTML = "📚 Keep Learning! Try Again.";
+}
+
+</script>
+
+</body>
+</html>

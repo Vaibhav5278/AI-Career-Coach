@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{ subtopic.name }} Quiz</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#1f4037,#99f2c8);
+min-height:100vh;
+padding:30px;
+display:flex;
+justify-content:center;
+}
+
+/* MAIN CONTAINER */
+
+.container{
+width:900px;
+background:white;
+border-radius:15px;
+padding:35px;
+box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* HEADER */
+
+h1{
+text-align:center;
+margin-bottom:25px;
+color:#333;
+}
+
+/* QUIZ INFO BAR */
+
+.quiz-info{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+padding:12px 20px;
+background:#f3f6fb;
+border-radius:10px;
+font-weight:500;
+}
+
+.timer{
+background:#ff4b5c;
+color:white;
+padding:6px 15px;
+border-radius:8px;
+font-weight:600;
+}
+
+/* QUESTION CARD */
+
+.question-box{
+background:#ffffff;
+border:1px solid #e6e6e6;
+padding:22px;
+border-radius:12px;
+margin-bottom:20px;
+transition:0.3s;
+}
+
+.question-box:hover{
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* QUESTION TEXT */
+
+.question{
+font-size:18px;
+font-weight:600;
+margin-bottom:15px;
+color:#222;
+}
+
+/* OPTIONS */
+
+.option{
+display:flex;
+align-items:center;
+padding:10px 14px;
+margin:6px 0;
+border-radius:8px;
+border:1px solid #ddd;
+cursor:pointer;
+transition:0.2s;
+}
+
+.option input{
+margin-right:10px;
+cursor:pointer;
+}
+
+.option:hover{
+background:#f5f9ff;
+border-color:#4a90e2;
+}
+
+/* SELECTED OPTION */
+
+.option input:checked + span{
+font-weight:600;
+color:#4a90e2;
+}
+
+/* PROGRESS TEXT */
+
+.progress{
+font-size:14px;
+color:#777;
+margin-bottom:10px;
+text-align:right;
+}
+
+/* SUBMIT BUTTON */
+
+.submit-btn{
+display:block;
+margin:30px auto 0;
+background:#4a90e2;
+color:white;
+border:none;
+padding:12px 35px;
+border-radius:30px;
+font-size:18px;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+.submit-btn:hover{
+background:#2f73c9;
+transform:scale(1.05);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+.container{
+width:100%;
+padding:25px;
+}
+
+.quiz-info{
+flex-direction:column;
+gap:10px;
+}
+
+.question{
+font-size:16px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>{{ subtopic.name }} Quiz</h1>
+
+<div class="quiz-info">
+<div>Total Questions: {{ questions|length }}</div>
+<div class="timer">Time Left: <span id="time">300</span> sec</div>
+</div>
+
+<form method="POST" id="quizForm">
+{% csrf_token %}
+
+{% for question in questions %}
+
+<div class="question-box">
+
+<div class="progress">
+Question {{ forloop.counter }} / {{ questions|length }}
+</div>
+
+<div class="question">
+<b>{{ forloop.counter }}. {{ question.question }}</b>
+</div>
+
+<label class="option">
+<input type="radio" name="{{question.id}}" value="{{question.option1}}">
+{{question.option1}}
+</label>
+
+<label class="option">
+<input type="radio" name="{{question.id}}" value="{{question.option2}}">
+{{question.option2}}
+</label>
+
+<label class="option">
+<input type="radio" name="{{question.id}}" value="{{question.option3}}">
+{{question.option3}}
+</label>
+
+<label class="option">
+<input type="radio" name="{{question.id}}" value="{{question.option4}}">
+{{question.option4}}
+</label>
+
+</div>
+
+{% empty %}
+
+<p>No questions available for this subtopic.</p>
+
+{% endfor %}
+
+<button class="submit-btn">Submit Quiz</button>
+
+</form>
+
+</div>
+
+
+<script>
+
+let timeLeft = 300; // 5 minutes
+let timer = document.getElementById("time");
+
+let countdown = setInterval(function(){
+
+timeLeft--;
+
+timer.textContent = timeLeft;
+
+if(timeLeft <= 0){
+
+clearInterval(countdown);
+
+alert("Time is up! Quiz will be submitted.");
+
+document.getElementById("quizForm").submit();
+
+}
+
+},1000);
+
+</script>
+
+</body>
+</html>

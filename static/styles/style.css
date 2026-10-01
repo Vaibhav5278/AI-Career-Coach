@@ -1,0 +1,577 @@
+/* ENTRY RESUME */
+
+/* ==================== ENTRY PAGE RESUME BUILDER ==================== */
+
+/* ------------------ Page Background ------------------ */
+body.entry-page {
+  background: url("/static/images/resumebg.jpg") center/cover no-repeat fixed;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  color: #000;
+  position: relative;
+}
+
+/* Overlay for contrast */
+body.entry-page::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 0;
+}
+
+/* ------------------ Main Form ------------------ */
+main.container {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ------------------ Page Title ------------------ */
+.page-title {
+  text-align: center;
+  font-size: 2.4rem;
+  margin-bottom: 30px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* ------------------ Cards ------------------ */
+.card {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card h2 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  color: #000;
+}
+
+/* ------------------ Inputs / Textareas / Select ------------------ */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  color: #000;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: 0.2s ease-in-out;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #2196f3;
+  outline: none;
+  box-shadow: 0 0 5px rgba(33, 150, 243, 0.4);
+}
+
+/* ------------------ Grid Layout ------------------ */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ------------------ Buttons ------------------ */
+button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.25s ease;
+}
+
+.add-btn {
+  background: #4caf50;
+  color: #fff;
+}
+
+.cancel-btn {
+  background: #f44336;
+  color: #fff;
+}
+
+.save-btn {
+  background: #2196f3;
+  color: #fff;
+}
+
+.download-btn {
+  background: #9c27b0;
+  color: #fff;
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ------------------ Project / Work / Cert Entries ------------------ */
+.project-entry,
+.work-entry,
+.cert-entry {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+/* ------------------ Horizontal Rule ------------------ */
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 12px 0;
+}
+
+/* ------------------ Form Actions ------------------ */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+/* ------------------ Navbar ------------------ */
+body.entry-page .navbar {
+  position: sticky;
+  top: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #333;
+  z-index: 2;
+  backdrop-filter: blur(5px);
+}
+
+body.entry-page .navbar .logo img {
+  height: 40px;
+}
+
+/* ------------------ Nav Buttons ------------------ */
+body.entry-page .nav-actions a,
+body.entry-page .nav-actions button {
+  color: #fff;
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-left: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+body.entry-page .nav-actions a:hover,
+body.entry-page .nav-actions button:hover {
+  background: #1e90ff;
+  border-color: #1e90ff;
+}
+
+/* ------------------ Primary Nav Button ------------------ */
+body.entry-page .nav-actions .nav-btn-primary {
+  background: #1e90ff;
+  border-color: #1e90ff;
+  color: #fff;
+}
+
+body.entry-page .nav-actions .nav-btn-primary:hover {
+  background: #0077cc;
+  border-color: #0077cc;
+}
+
+
+
+/* RESUME PREVIEW */
+/* ---------- Global Styles ---------- */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: url("../images/resumebg.jpg");
+  background-size: cover;
+  color: #333;
+  margin: 0;
+  padding: 0;
+
+  /* Optional overlay for readability */
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(244, 246, 249, 0.85); /* light overlay for readability */
+  z-index: -1;
+}
+
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.page-title {
+  text-align: center;
+  color: #222;
+  margin-bottom: 25px;
+  font-size: 2rem;
+}
+
+/* ---------- Card Styles ---------- */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 1.3rem;
+  color: #0056b3;
+}
+
+/* ---------- Buttons ---------- */
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn {
+  text-decoration: none;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.back-btn {
+  background: #6c757d;
+  color: #fff;
+}
+
+.edit-btn {
+  background: #ffc107;
+  color: #000;
+}
+
+.download-btn {
+  background: #007bff;
+  color: #fff;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* cover letter*/
+.cover-app {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #f5f5f5; /* Light background for the whole app */
+  color: #000;          /* Dark text */
+  border-radius: 12px;
+  font-family: Arial, sans-serif;
+}
+
+.cover-app h1, .cover-app h2 {
+  color: #1e90ff;
+  margin-bottom: 15px;
+}
+
+.cover-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background: #ffffff; /* White form sections */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.cover-section input,
+.cover-section textarea,
+.cover-section button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.cover-section input,
+.cover-section textarea {
+  background: #ffffff; /* White input fields */
+  color: #000;         /* Black text */
+}
+
+.cover-section textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.cover-section button {
+  background: #1e90ff;  /* Button color */
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+  border: none;
+}
+
+.cover-section button:hover {
+  background: #0077cc;
+}
+
+#coverList {
+  list-style: none;
+  padding: 0;
+}
+
+#coverList li {
+  background: #f9f9f9;  /* Light list items */
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+}
+
+#coverList li:hover {
+  background: #e6f0ff; /* Slight blue hover effect */
+}
+
+.cover-preview {
+  background: #ffffff;   /* White preview */
+  color: #000;
+  padding: 20px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  min-height: 200px;
+}
+
+
+
+
+/* ---------- LOGIN PAGE ---------- */
+/* -------------------------------
+   Reset & Base Styles
+----------------------------------*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* -------------------------------
+   Body & Background
+----------------------------------*/
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #caf0f8, #ade8f4, #90e0ef);
+  background-size: cover;
+}
+
+/* -------------------------------
+   Register Box
+----------------------------------*/
+.register-page .form-box {
+  background: #ffffff;
+  padding: 50px 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 420px;
+  margin: 0 80px; /* ✅ Increased left & right margin */
+  animation: fadeIn 1s ease;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------------------
+   Headings
+----------------------------------*/
+h2 {
+  text-align: center;
+  color: #0077b6;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* -------------------------------
+   Input Groups
+----------------------------------*/
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  outline: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #00b4d8;
+  box-shadow: 0 0 5px rgba(0, 180, 216, 0.3);
+}
+
+/* -------------------------------
+   Buttons
+----------------------------------*/
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0077b6, #00b4d8);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* -------------------------------
+   Messages
+----------------------------------*/
+.messages {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.messages p {
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.messages .error {
+  background-color: #ffd6d6;
+  color: #a80000;
+}
+
+.messages .success {
+  background-color: #d6ffd6;
+  color: #007a00;
+}
+
+/* -------------------------------
+   Login Link
+----------------------------------*/
+.login-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.login-link a {
+  color: #0077b6;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+  color: #00b4d8;
+}
+
+/* -------------------------------
+   Responsive Design
+----------------------------------*/
+@media (max-width: 480px) {
+  .register-page .form-box {
+    margin: 0 25px; /* reduce margin for small screens */
+    padding: 35px 25px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+  }
+}

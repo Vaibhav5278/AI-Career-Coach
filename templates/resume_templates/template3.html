@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ data.name|default:"Resume" }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Reset & Body */
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter', sans-serif; }
+  body { background:#f0f2f5; display:flex; justify-content:center; padding:40px 0; }
+  .resume-container { width:100%; max-width:850px; background:#fff; padding:40px 50px; border-radius:10px; box-shadow:0 8px 20px rgba(0,0,0,0.1); }
+
+  /* Header */
+  header { text-align:center; margin-bottom:30px; }
+  header h1 { font-size:2.5rem; font-weight:700; color:#0f172a; }
+  header h2 { font-size:1.1rem; font-weight:500; color:#475569; margin-top:4px; }
+  .contact-info { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; font-size:0.9rem; color:#64748b; margin-top:8px; }
+  .contact-info span { display:flex; align-items:center; gap:4px; }
+
+  /* Section Titles */
+  section { margin-bottom:28px; }
+  .section-title { font-size:1.25rem; font-weight:600; color:#0f172a; border-bottom:2px solid #0ea5e9; padding-bottom:6px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.03em; }
+
+  /* Text & Lists */
+  .item-desc { font-size:0.95rem; color:#334155; line-height:1.6; margin-top:6px; }
+  .item-desc ul { padding-left:20px; margin-top:6px; }
+  .item-desc li { margin-bottom:4px; }
+
+  /* Work & Education */
+  .detail-item { margin-bottom:16px; }
+  .header-row { display:flex; justify-content:space-between; flex-wrap:wrap; }
+  .job-title { font-weight:600; font-size:1rem; color:#0f172a; }
+  .company-name { font-style:italic; color:#0ea5e9; font-size:0.95rem; margin-top:2px; }
+  .date { font-size:0.9rem; color:#64748b; white-space:nowrap; margin-top:2px; }
+
+  /* Skills & Extras */
+  .skills-list, .extra-list { display:flex; flex-wrap:wrap; list-style:none; gap:10px; padding:0; margin-top:6px; }
+  .skills-list li { background:#e0f2fe; color:#0ea5e9; padding:6px 14px; border-radius:6px; font-size:0.85rem; font-weight:500; }
+  .extra-list li { background:#fff7ed; color:#c2410c; padding:6px 14px; border-radius:6px; font-size:0.85rem; font-weight:500; }
+
+  /* Buttons */
+  .form-actions { display:flex; justify-content:center; gap:15px; margin-top:30px; flex-wrap:wrap; }
+  .btn { text-decoration:none; padding:10px 18px; border-radius:6px; font-weight:600; font-size:0.9rem; color:white; transition:0.2s; }
+  .back-btn { background:#6b7280; }
+  .edit-btn { background:#374151; }
+  .download-btn { background:#0ea5e9; }
+  .btn:hover { opacity:0.9; transform:translateY(-2px); }
+
+  @media print {
+    body { background:white; }
+    .resume-container { box-shadow:none; padding:0; width:210mm; }
+    .form-actions { display:none; }
+  }
+
+  @media(max-width:600px) {
+    .header-row { flex-direction:column; align-items:flex-start; }
+    .date { margin-top:3px; }
+    .skills-list, .extra-list { gap:6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="resume-container">
+
+  <!-- Header -->
+  <header>
+    <h1>{{ data.name|default:"YOUR NAME" }}</h1>
+    <h2>{{ data.role|default:"Aspiring Professional" }}</h2>
+    <div class="contact-info">
+      {% if data.email %}<span>Email: {{ data.email }}</span>{% endif %}
+      {% if data.phone %}<span>Phone: {{ data.phone }}</span>{% endif %}
+      {% if data.linkedin %}<span>LinkedIn: {{ data.linkedin }}</span>{% endif %}
+      {% if data.twitter %}<span>Twitter: {{ data.twitter }}</span>{% endif %}
+      {% if data.website %}<span>Website: {{ data.website }}</span>{% endif %}
+    </div>
+  </header>
+
+  <!-- Professional Summary -->
+  <section>
+    <div class="section-title">Professional Summary</div>
+    <p class="item-desc">{{ data.summary|default:"Write a concise professional summary here highlighting your skills and goals." }}</p>
+  </section>
+
+  <!-- Skills -->
+  <section>
+    <div class="section-title">Skills</div>
+    <ul class="skills-list">
+      {% for skill in data.skills %}
+        <li>{{ skill }}</li>
+      {% empty %}
+        <li>Python</li><li>SQL</li><li>Excel</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- Work Experience -->
+  <section>
+    <div class="section-title">Work Experience</div>
+    {% for item in data.work %}
+    <div class="detail-item">
+      <div class="header-row">
+        <span class="job-title">{{ item.title }}</span>
+        <span class="date">{{ item.start }} - {{ item.end }}</span>
+      </div>
+      <span class="company-name">{{ item.company }}</span>
+      <div class="item-desc">{{ item.desc|safe }}</div>
+    </div>
+    {% empty %}
+      <p class="item-desc">No work experience listed.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Projects -->
+  <section>
+    <div class="section-title">Projects</div>
+    {% for item in data.projects %}
+    <div class="detail-item">
+      <div class="header-row">
+        <span class="job-title">{{ item.title }}</span>
+        <span class="date">({{ item.tech }})</span>
+      </div>
+      <div class="item-desc">{{ item.desc|safe }}</div>
+    </div>
+    {% empty %}
+      <p class="item-desc">No projects listed.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Education -->
+  <section>
+    <div class="section-title">Education</div>
+    {% for item in data.education %}
+    <div class="detail-item">
+      <div class="header-row">
+        <span class="job-title">{{ item.title }}</span>
+        <span class="date">{{ item.start }} - {{ item.end }}</span>
+      </div>
+      <span class="company-name">{{ item.school }}</span>
+      <div class="item-desc">{{ item.desc|safe }}</div>
+    </div>
+    {% empty %}
+      <p class="item-desc">No education records.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Certifications -->
+  <section>
+    <div class="section-title">Certifications</div>
+    {% for item in data.certifications %}
+    <div class="detail-item">
+      <div class="header-row">
+        <span class="job-title">{{ item.name }}</span>
+        <span class="date">{{ item.date }}</span>
+      </div>
+      <span class="company-name">{{ item.org }}</span>
+      <div class="item-desc">{{ item.desc|safe }}</div>
+    </div>
+    {% empty %}
+      <p class="item-desc">No certifications added.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Extra Curricular Activities -->
+  <section>
+    <div class="section-title">Extra Curricular Activities</div>
+    <ul class="extra-list">
+      {% for activity in data.extra_activities %}
+        <li>{{ activity }}</li>
+      {% empty %}
+        <li>Participated in college events</li>
+        <li>Volunteered in community service</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- Action Buttons -->
+  <div class="form-actions">
+
+    <a href="{% url 'entry_resume' %}" class="btn edit-btn">Back</a>
+    <a href="{% url 'download_resume_pdf' %}" class="btn download-btn">⬇️ Download PDF</a>
+    <a href="{% url 'download_resume_docx' %}" class="btn download-btn">⬇️ Download Word</a>
+  </div>
+
+</div>
+
+</body>
+</html>
+

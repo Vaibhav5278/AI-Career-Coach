@@ -1,0 +1,313 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head xmlns="http://www.w3.org/1999/html">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Letter Manager</title>
+    <!-- Removed external CSS link to prevent conflicts:
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}"> -->
+
+    <style>
+     /* Theme Colors for Professional Forms */
+    :root {
+      /* FIX: Changed primary accent color to Sky Blue/Peacock Blue */
+      --primary-purple: #00A9CC;
+      --light-purple: #bb86fc; /* Kept for backup but not currently used */
+
+      /* Updated background colors (Medium-Dark Purple) */
+      --light-bg-start: #522A66;
+      --light-bg-end: #683582;
+
+      --card-bg: #ffffff;
+      --text-dark: #333;
+      --border-color: #000000; /* Black borders */
+      --shadow-md: 0 8px 25px rgba(0, 0, 0, 0.15);
+      --success-green: #28a745;
+      --card-title-color: #00A9CC; /* Card section title color, using new primary blue */
+    }
+
+    /* ========== Global Reset and Body Styles ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      /* Use the medium-dark purple gradient */
+      background: linear-gradient(135deg, var(--light-bg-start) 0%, var(--light-bg-end) 100%);
+
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 40px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ========== Layout and Containers ========== */
+    .cover-app {
+      width: 95%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.8rem;
+      color: #ffffff; /* White heading */
+      margin-bottom: 2rem;
+      font-weight: 800;
+      text-shadow: none;
+      padding-top: 10px;
+    }
+
+    .cover-section {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color); /* Black border */
+    }
+
+    /* Form structure */
+    #coverForm {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    /* Grid for input fields (Contact and Company Info) */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      padding: 10px 0;
+    }
+
+    /* Separator for the two main groups of fields within the form */
+    .grid:nth-of-type(1) {
+        margin-bottom: 20px;
+        /* Using rgba(0,0,0, 0.08) for a subtle separation line, kept light for aesthetics */
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        padding-bottom: 20px;
+    }
+
+    .card h2 {
+        font-size: 1.4rem;
+        color: var(--card-title-color);
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+
+    /* ========== Form Elements (Inputs, Textareas) ========== */
+    input, textarea, select {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1px solid var(--border-color); /* Now black */
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+
+      background-color: white;
+      color: var(--text-dark);
+      opacity: 1;
+
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input::placeholder, textarea::placeholder {
+        color: #999;
+        font-weight: 400;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary-purple); /* Blue focus border */
+      outline: none;
+      /* FIX: Blue focus glow */
+      box-shadow: 0 0 0 3px rgba(0, 169, 204, 0.3);
+    }
+
+    /* Textareas for Intro, Body, Closing */
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      margin-bottom: 0px;
+    }
+
+    textarea[name="body"] {
+        min-height: 180px;
+    }
+
+    input[name="date"] {
+        font-weight: 500;
+        color: #555;
+    }
+
+    /* Template Selection */
+    .template-selection {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 10px 0;
+        margin-top: 10px;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        padding-top: 25px;
+    }
+
+    .template-selection h3 {
+        font-size: 1.1rem;
+        color: var(--text-dark);
+        font-weight: 600;
+        margin: 0;
+    }
+
+    select {
+        width: 250px;
+        cursor: pointer;
+        background-color: #f7f7f7;
+        appearance: none;
+        /* FIX: Updated dropdown arrow color to blue */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%2300A9CC' d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px top 50%;
+        background-size: 16px;
+    }
+
+    /* ========== Buttons and Actions ========== */
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+      padding-top: 10px;
+    }
+
+    #previewBtn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s, transform 0.1s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      background-color: var(--primary-purple); /* Blue button */
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    #previewBtn:hover {
+      background-color: #008CA3; /* Slightly darker blue hover state */
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+
+    /* ========== Responsive Adjustments ========== */
+    @media (max-width: 900px) {
+        .grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .template-selection {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        select {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 20px 0;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .cover-section {
+        padding: 20px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .form-actions {
+        justify-content: center;
+      }
+
+      #previewBtn {
+          width: 100%;
+          max-width: 300px;
+          padding: 12px 25px;
+      }
+    }
+    </style>
+</head>
+<body class="entry-page">
+
+<div class="cover-app">
+    <h1>Cover Letter Builder</h1>
+
+    <!-- ====== FORM ====== --><section class="cover-section">
+        <form id="coverForm" method="POST" action="{% url 'cover_preview' %}">
+    {% csrf_token %}
+
+            <div class="grid">
+                <!-- Header / Contact Info --><input type="text" name="name" placeholder="Your Name" required>
+                <input type="text" name="address" placeholder="Your Address (optional)">
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="text" name="phone" placeholder="Phone" required>
+                <input type="text" name="linkedin" placeholder="LinkedIn / Portfolio URL (optional)">
+                <input type="date" name="date" placeholder="Date" required>
+
+                <!-- Employer / Company Details --><input type="text" name="company" placeholder="Company Name" required>
+                <input type="text" name="company_address" placeholder="Company Address (optional)">
+                <input type="text" name="position" placeholder="Position Applied For" required>
+                <input type="text" name="hiring_manager" placeholder="Hiring Manager (optional)">
+            </div>
+
+            <!-- Cover Letter Content --><textarea name="intro" placeholder="Intro Paragraph" required></textarea>
+            <textarea name="body" placeholder="Body Paragraph (skills, experience)" required></textarea>
+            <textarea name="closing" placeholder="Closing Paragraph" required></textarea>
+            <input type="text" name="signature" placeholder="Your Name / Signature" required>
+
+            <!-- Template Selection --><div class="template-selection">
+    <h3>Select Template:</h3>
+    <select name="template" id="templateSelect">
+        <option value="template1" selected>Template 1</option>
+        <option value="template2">Template 2</option>
+        <option value="template3">Template 3</option>
+        <option value="template4">Template 4</option>
+    </select>
+</div>
+
+            <!-- Buttons --><div class="form-actions">
+
+                <button type="submit" id="previewBtn">Preview Letter</button>
+
+            </div>
+        </form>
+    </section>
+</div>
+
+<script src="{% static 'js/main.js' %}">
+
+document.getElementById("previewBtn").addEventListener("click", function() {
+    document.getElementById("coverForm").submit();
+});
+</script>
+</body>
+</html>

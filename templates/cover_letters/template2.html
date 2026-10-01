@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ name }} - Cover Letter</title>
+    <style>
+        @page { size: A4; margin: 0; }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .letter-container {
+            background-color: #fff;
+            padding: 40px 50px;
+            margin: 40px 0;
+            width: 70%;
+            max-width: 800px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            line-height: 1.6;
+        }
+
+        .header {
+            border-bottom: 4px solid #4CAF50;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 { font-size: 24px; margin: 0; color: #2E7D32; }
+        .header p { font-size: 12px; margin: 2px 0; color: #555; }
+        .header a { color: #4CAF50; text-decoration: none; }
+
+        .date { text-align: right; font-size: 12px; margin-bottom: 20px; color: #555; }
+
+        .recipient p { margin: 2px 0; font-size: 12px; }
+
+        .content p { margin-bottom: 15px; font-size: 13px; text-align: justify; }
+
+        .field-label { font-weight: bold; color: #333; }
+
+        .closing { margin-top: 30px; }
+        .signature { margin-top: 50px; font-weight: bold; font-size: 14px; }
+        .accent { color: #4CAF50; font-weight: bold; }
+
+        @media print {
+            body { background: none; }
+            .letter-container { box-shadow: none; width: 100%; margin: 0; padding: 2cm; }
+        }
+    </style>
+</head>
+<body>
+    <div class="letter-container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1><span class="field-label"></span> {{ name }}</h1>
+
+            <p>
+                <span class="field-label">Email:</span> <span class="accent">{{ email }}</span> |
+                <span class="field-label">Phone:</span> <span class="accent">{{ phone }}</span>
+                {% if linkedin %}| <span class="field-label">LinkedIn:</span> <a href="{{ linkedin }}">{{ linkedin }}</a>
+                {% endif %}
+                {% if address %}<p><span class="field-label">Address:</span> {{ address }}</p>{% endif %}
+            </p>
+        </div>
+
+        <!-- Date -->
+        <div class="date"><span class="field-label">Date:</span> {{ date }}</div>
+
+        <!-- Recipient -->
+        <div class="recipient">
+            <p><span class="field-label">Hiring Manager:</span> {{ hiring_manager|default:"Hiring Manager" }}</p>
+            <p><span class="field-label">Company:</span> {{ company }}</p>
+            {% if company_address %}<p><span class="field-label">Company Address:</span> {{ company_address }}</p>{% endif %}
+        </div>
+
+        <!-- Greeting -->
+        <p>Dear {{ hiring_manager|default:"Hiring Manager" }},</p>
+
+        <!-- Body -->
+        <div class="content">
+            <p><span class="field-label"></span> {{ intro }}</p>
+            <p><span class="field-label"></span> {{ body }}</p>
+            <p><span class="field-label"></span> {{ closing }}</p>
+        </div>
+
+        <!-- Closing -->
+        <div class="closing">
+            <p>Best regards,</p>
+            <p class="signature">{{ signature }}</p>
+        </div>
+<a href="{% url 'download_cover_pdf' %}" class="btn download-btn">⬇️ Download PDF</a>
+    <a href="{% url 'download_cover_docx' %}" class="btn download-btn">⬇️ Download Word</a>
+    </div>
+</body>
+</html>

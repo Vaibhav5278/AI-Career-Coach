@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>AI Career Coach - Learning Path Generator</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: #f4f6f8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background: #0078d7;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .container {
+    max-width: 950px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  }
+  label {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  button {
+    background: #0078d7;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: #005fa3;
+  }
+  .path {
+    margin-top: 30px;
+  }
+  .section {
+    margin-bottom: 25px;
+    background: #f0f4ff;
+    border-radius: 8px;
+    padding: 15px;
+    transition: 0.3s;
+  }
+  .section:hover {
+    background: #e0ebff;
+  }
+  h3 {
+    color: #0078d7;
+    margin-bottom: 10px;
+    border-left: 4px solid #0078d7;
+    padding-left: 10px;
+  }
+  ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  ul li {
+    margin: 6px 0;
+  }
+  a {
+    color: #1d4ed8;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+ {% include 'navbar.html' %}
+<header>AI Career Coach - Real-Time Learning Path Generator</header>
+
+<div class="container">
+  <label for="career">Choose your Career Goal:</label>
+  <select id="career">
+    <option value="">Select Career</option>
+    <option>Python Full Stack Developer</option>
+    <option>Data Analyst</option>
+    <option>Java Full Stack Developer</option>
+    <option>MERN Stack Developer</option>
+    <option>MEAN Stack Developer</option>
+    <option>Data Scientist</option>
+    <option>Machine Learning Engineer</option>
+    <option>AI Engineer</option>
+    <option>Android Developer</option>
+    <option>iOS Developer</option>
+    <option>DevOps Engineer</option>
+    <option>Cloud Engineer</option>
+    <option>Cybersecurity Analyst</option>
+    <option>Blockchain Developer</option>
+    <option>Game Developer</option>
+    <option>Frontend Developer</option>
+    <option>Backend Developer</option>
+    <option>Database Administrator</option>
+    <option>Data Engineer</option>
+    <option>Software Tester</option>
+  </select><br><br>
+
+  <button onclick="generatePath()">Generate Learning Path</button>
+
+  <div class="path" id="path"></div>
+</div>
+
+<script>
+const paths = {
+  "Python Full Stack Developer": {
+    "Frontend": ["HTML", "CSS", "JavaScript", "React.js", "Bootstrap/Tailwind"],
+    "Backend": ["Python", "Flask", "Django", "FastAPI"],
+    "Database": ["MySQL", "PostgreSQL", "MongoDB", "SQLite"],
+    "Tools": ["Git & GitHub", "Docker", "VS Code", "Postman"],
+    "Projects": ["Portfolio Website", "E-commerce App", "Blog API", "Task Manager App"],
+    "Resources": [
+      "<a href='https://www.w3schools.com/html/' target='_blank'>HTML & CSS - W3Schools</a>",
+      "<a href='https://docs.djangoproject.com/' target='_blank'>Django Docs</a>",
+      "<a href='https://www.youtube.com/watch?v=UmljXZIypDc' target='_blank'>Python Full Stack Tutorial</a>"
+    ]
+  },
+  "Data Analyst": {
+    "Frontend Tools": ["Excel", "Google Sheets", "Tableau", "Power BI"],
+    "Backend Programming": ["Python", "R", "SQL", "SAS"],
+    "Database": ["MySQL", "PostgreSQL", "SQLite", "Oracle"],
+    "Statistics & ML": ["Descriptive Statistics", "Regression Analysis", "Clustering"],
+    "Projects": ["Sales Analysis Dashboard", "Customer Segmentation", "Financial Data Reporting"],
+    "Resources": [
+      "<a href='https://www.kaggle.com/learn/data-analysis' target='_blank'>Kaggle Data Analysis</a>",
+      "<a href='https://www.w3schools.com/sql/' target='_blank'>SQL Tutorial</a>"
+    ]
+  },
+  "Java Full Stack Developer": {
+    "Frontend": ["HTML", "CSS", "JavaScript", "React.js", "Angular"],
+    "Backend": ["Java", "Spring Boot", "Hibernate", "Maven"],
+    "Database": ["MySQL", "PostgreSQL", "MongoDB"],
+    "Tools": ["Git", "IntelliJ IDEA", "Jenkins", "Docker"],
+    "Projects": ["Employee Management System", "Banking App", "Blog API"],
+    "Resources": [
+      "<a href='https://spring.io/projects/spring-boot' target='_blank'>Spring Boot Docs</a>",
+      "<a href='https://www.javatpoint.com/java-tutorial' target='_blank'>Java Tutorials</a>"
+    ]
+  },
+  "MERN Stack Developer": {
+    "Frontend": ["HTML", "CSS", "JavaScript", "React.js"],
+    "Backend": ["Node.js", "Express.js"],
+    "Database": ["MongoDB"],
+    "Tools": ["Git", "VS Code", "Postman", "Docker"],
+    "Projects": ["Chat App", "E-commerce Site", "Blog Website"],
+    "Resources": [
+      "<a href='https://www.mongodb.com/' target='_blank'>MongoDB Docs</a>",
+      "<a href='https://www.youtube.com/watch?v=7CqJlxBYj-M' target='_blank'>MERN Full Stack Tutorial</a>"
+    ]
+  },
+  "MEAN Stack Developer": {
+    "Frontend": ["HTML", "CSS", "JavaScript", "Angular"],
+    "Backend": ["Node.js", "Express.js"],
+    "Database": ["MongoDB"],
+    "Tools": ["Git", "Postman", "Docker"],
+    "Projects": ["Job Portal", "Inventory App", "CRM Dashboard"],
+    "Resources": [
+      "<a href='https://angular.io/docs' target='_blank'>Angular Docs</a>",
+      "<a href='https://www.youtube.com/watch?v=3qBXWUpoPHo' target='_blank'>MEAN Stack Tutorial</a>"
+    ]
+  },
+  "Data Scientist": {
+    "Foundations": ["Python", "Statistics", "Linear Algebra", "Data Cleaning"],
+    "Libraries": ["NumPy", "Pandas", "Matplotlib", "Seaborn", "Scikit-learn"],
+    "Machine Learning": ["Regression", "Classification", "Clustering"],
+    "Advanced": ["Deep Learning", "NLP", "Big Data", "Model Deployment"],
+    "Database": ["SQL", "MongoDB"],
+    "Projects": ["Sales Prediction", "Customer Segmentation", "Sentiment Analysis"],
+    "Resources": [
+      "<a href='https://www.kaggle.com/learn' target='_blank'>Kaggle Courses</a>",
+      "<a href='https://www.youtube.com/watch?v=ua-CiDNNj30' target='_blank'>Data Science Full Course</a>"
+    ]
+  },
+  "Machine Learning Engineer": {
+    "Core": ["Python", "Mathematics: Statistics, Linear Algebra"],
+    "Machine Learning": ["Scikit-learn", "Regression", "Classification", "Clustering", "Feature Engineering"],
+    "Deep Learning": ["TensorFlow", "Keras", "PyTorch"],
+    "MLOps": ["Docker", "FastAPI", "MLflow", "AWS/GCP"],
+    "Projects": ["Predictive Model", "Image Classifier", "Recommendation System"],
+    "Resources": [
+      "<a href='https://scikit-learn.org/stable/' target='_blank'>Scikit-learn Docs</a>",
+      "<a href='https://www.tensorflow.org/' target='_blank'>TensorFlow Docs</a>",
+      "<a href='https://www.youtube.com/watch?v=NWONeJKn6kc' target='_blank'>Machine Learning Crash Course</a>"
+    ]
+  },
+  "AI Engineer": {
+    "Core": ["Python", "Mathematics", "ML Algorithms"],
+    "AI Techniques": ["Deep Learning", "Computer Vision", "NLP"],
+    "Tools": ["TensorFlow", "PyTorch", "OpenCV", "LangChain"],
+    "Deployment": ["Flask/FastAPI", "Docker", "AWS Lambda"],
+    "Projects": ["Chatbot", "AI Assistant", "Image Recognition App"],
+    "Resources": [
+      "<a href='https://pytorch.org/' target='_blank'>PyTorch Official Docs</a>",
+      "<a href='https://www.youtube.com/watch?v=aircAruvnKk' target='_blank'>Deep Learning with Python</a>"
+    ]
+  },
+  "Android Developer": {
+    "Languages": ["Kotlin", "Java"],
+    "Tools": ["Android Studio", "Gradle", "Firebase"],
+    "Topics": ["UI Design", "APIs", "Data Storage", "Play Store Deployment"],
+    "Projects": ["Notes App", "Weather App", "Expense Tracker"],
+    "Resources": [
+      "<a href='https://developer.android.com/docs' target='_blank'>Android Developer Docs</a>",
+      "<a href='https://www.youtube.com/watch?v=fis26HvvDII' target='_blank'>Android Development Tutorial</a>"
+    ]
+  },
+  "iOS Developer": {
+    "Languages": ["Swift", "Objective-C"],
+    "Tools": ["Xcode", "CocoaPods", "SwiftUI"],
+    "Concepts": ["UIKit", "Networking", "Core Data"],
+    "Projects": ["To-do App", "Chat App", "Finance Tracker"],
+    "Resources": [
+      "<a href='https://developer.apple.com/documentation/' target='_blank'>Apple Developer Docs</a>",
+      "<a href='https://www.youtube.com/watch?v=09TeUXjzpKs' target='_blank'>iOS Development Tutorial</a>"
+    ]
+  },
+  "DevOps Engineer": {
+    "Concepts": ["CI/CD", "Automation", "Infrastructure as Code"],
+    "Tools": ["Docker", "Kubernetes", "Jenkins", "Ansible", "Terraform"],
+    "Cloud": ["AWS", "Azure", "GCP"],
+    "Monitoring": ["Prometheus", "Grafana"],
+    "Projects": ["Pipeline Automation", "Containerized App Deployment"],
+    "Resources": [
+      "<a href='https://www.jenkins.io/doc/' target='_blank'>Jenkins Docs</a>",
+      "<a href='https://kubernetes.io/docs/home/' target='_blank'>Kubernetes Docs</a>"
+    ]
+  },
+  "Cloud Engineer": {
+    "Platforms": ["AWS", "Azure", "Google Cloud"],
+    "Concepts": ["Networking", "Storage", "Compute", "IAM"],
+    "Tools": ["Terraform", "Docker", "Kubernetes"],
+    "Projects": ["Host a Web App on Cloud", "CI/CD with AWS", "Cloud Monitoring"],
+    "Resources": [
+      "<a href='https://aws.amazon.com/training/' target='_blank'>AWS Training</a>",
+      "<a href='https://azure.microsoft.com/en-us/training/' target='_blank'>Azure Training</a>"
+    ]
+  },
+  "Cybersecurity Analyst": {
+    "Core": ["Networking", "Operating Systems", "Threat Analysis"],
+    "Tools": ["Wireshark", "Metasploit", "Nmap"],
+    "Concepts": ["Vulnerability Assessment", "Penetration Testing", "Encryption"],
+    "Projects": ["Vulnerability Report", "Security Audit", "Password Cracker"],
+    "Resources": [
+      "<a href='https://www.cybrary.it/' target='_blank'>Cybrary Courses</a>",
+      "<a href='https://www.youtube.com/watch?v=inWWhr5tnEA' target='_blank'>Cybersecurity Tutorial</a>"
+    ]
+  },
+  "Blockchain Developer": {
+    "Languages": ["Solidity", "JavaScript", "Python"],
+    "Platforms": ["Ethereum", "Hyperledger", "Polygon"],
+    "Tools": ["Truffle", "Ganache", "Metamask"],
+    "Projects": ["NFT Marketplace", "Crypto Wallet", "Voting DApp"],
+    "Resources": [
+      "<a href='https://soliditylang.org/' target='_blank'>Solidity Docs</a>",
+      "<a href='https://www.youtube.com/watch?v=ipwxYa-F1uY' target='_blank'>Blockchain Development Tutorial</a>"
+    ]
+  },
+  "Game Developer": {
+    "Languages": ["C#", "C++", "JavaScript"],
+    "Engines": ["Unity", "Unreal Engine", "Godot"],
+    "Concepts": ["Game Physics", "AI in Games", "3D Modeling"],
+    "Projects": ["2D Platformer", "Racing Game", "FPS Game"],
+    "Resources": [
+      "<a href='https://unity.com/learn' target='_blank'>Unity Learn</a>",
+      "<a href='https://www.youtube.com/watch?v=gB1F9G0JXOo' target='_blank'>Game Development Tutorial</a>"
+    ]
+  },
+  "Frontend Developer": {
+    "Core": ["HTML", "CSS", "JavaScript"],
+    "Frameworks": ["React.js", "Vue.js", "Angular"],
+    "Styling": ["Bootstrap", "Tailwind CSS"],
+    "Tools": ["VS Code", "Git", "Figma"],
+    "Projects": ["Portfolio Website", "Landing Page", "Dashboard UI"],
+    "Resources": [
+      "<a href='https://www.w3schools.com/' target='_blank'>W3Schools</a>",
+      "<a href='https://reactjs.org/docs/getting-started.html' target='_blank'>React Docs</a>"
+    ]
+  },
+  "Backend Developer": {
+    "Languages": ["Python", "Java", "Node.js", "Go", "PHP"],
+    "Frameworks": ["Django", "Spring Boot", "Express.js", "Laravel"],
+    "Database": ["MySQL", "MongoDB", "PostgreSQL"],
+    "Tools": ["Git", "Postman", "Docker"],
+    "Projects": ["REST API", "User Auth System", "Inventory API"],
+    "Resources": [
+      "<a href='https://www.djangoproject.com/' target='_blank'>Django Docs</a>",
+      "<a href='https://spring.io/projects/spring-boot' target='_blank'>Spring Boot Docs</a>"
+    ]
+  },
+  "Database Administrator": {
+    "Database": ["MySQL", "PostgreSQL", "MongoDB", "Oracle"],
+    "Concepts": ["Normalization", "Indexing", "Backups", "Replication"],
+    "Tools": ["pgAdmin", "MySQL Workbench"],
+    "Projects": ["Database Design", "Data Migration", "Performance Tuning"],
+    "Resources": [
+      "<a href='https://www.postgresql.org/docs/' target='_blank'>PostgreSQL Docs</a>",
+      "<a href='https://dev.mysql.com/doc/' target='_blank'>MySQL Docs</a>"
+    ]
+  },
+  "Data Engineer": {
+    "Skills": ["Python", "SQL", "ETL Pipelines"],
+    "Tools": ["Apache Spark", "Kafka", "Airflow"],
+    "Cloud": ["AWS", "GCP BigQuery", "Azure Data Factory"],
+    "Projects": ["Data Pipeline", "ETL Workflow", "Real-time Stream Processing"],
+    "Resources": [
+      "<a href='https://spark.apache.org/docs/latest/' target='_blank'>Apache Spark Docs</a>",
+      "<a href='https://www.youtube.com/watch?v=_C8kWso4ne4' target='_blank'>Data Engineering Tutorial</a>"
+    ]
+  },
+  "Software Tester": {
+    "Concepts": ["Manual Testing", "Automation Testing"],
+    "Tools": ["Selenium", "JUnit", "Postman", "JMeter"],
+    "Types": ["Functional", "Performance", "Security"],
+    "Projects": ["Automation Suite", "API Testing", "Bug Tracker"],
+    "Resources": [
+      "<a href='https://www.selenium.dev/documentation/' target='_blank'>Selenium Docs</a>",
+      "<a href='https://www.guru99.com/software-testing.html' target='_blank'>Software Testing Tutorials</a>"
+    ]
+  }
+};
+
+function generatePath() {
+  const career = document.getElementById("career").value;
+  const container = document.getElementById("path");
+  container.innerHTML = "";
+
+  if (paths[career]) {
+    const data = paths[career];
+    for (const section in data) {
+      const secDiv = document.createElement("div");
+      secDiv.className = "section";
+      const h3 = document.createElement("h3");
+      h3.textContent = section;
+      secDiv.appendChild(h3);
+
+      const ul = document.createElement("ul");
+      data[section].forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = item;
+        ul.appendChild(li);
+      });
+      secDiv.appendChild(ul);
+      container.appendChild(secDiv);
+    }
+  } else {
+    container.innerHTML = "<p style='color:red;'>No learning path found for this career. Please select from the list.</p>";
+  }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
